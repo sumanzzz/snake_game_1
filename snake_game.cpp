@@ -2,9 +2,8 @@
 //
 
 #include <iostream>
-#include <SFML/Graphics.hpp>
 #include <vector>
-#include <cstdlib>
+
 using namespace std;
 
 const int ROWS = 10;
@@ -115,22 +114,6 @@ int main()
         drawBoard(Board);
     }
 
-    /*sf::RenderWindow window(
-        sf::VideoMode({ 800, 600 }),
-        "Snake"
-    );
-
-    while (window.isOpen())
-    {
-        while (const std::optional event = window.pollEvent())
-        {
-            if (event->is<sf::Event::Closed>())
-                window.close();
-        }
-
-        window.clear();
-        window.display();
-    }*/
 }
 
 // Run program: Ctrl + F5 or Debug > Start Without Debugging menu
