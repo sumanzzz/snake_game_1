@@ -4,10 +4,13 @@
 #include <iostream>
 #include <SFML/Graphics.hpp>
 #include <vector>
+#include <cstdlib>
 using namespace std;
 
 const int ROWS = 10;
 const int COLS = 10;
+
+//srand(time(0));
 
 enum Direction {
     UP,
@@ -20,7 +23,7 @@ Direction dir;
 void clearBoard(vector<vector<int>>& Board) {
     for (int i = 0; i < ROWS; i++) {
         for (int j = 0; j < COLS; j++) {
-            Board[i][j] = 0;
+            if(Board[i][j] != 2) Board[i][j] = 0;
         }
     }
 }
@@ -33,14 +36,25 @@ void drawBoard(vector<vector<int>>& Board) {
         cout << endl;
     }
 }
+
+
+void generateFood(vector<vector<int>>& Board) {
+    int foodRow, foodCol;
+    while (true) {
+        foodRow = rand() % ROWS;
+        foodCol = rand() % COLS;
+
+        if (Board[foodRow][foodCol] == 0) {
+            Board[foodRow][foodCol] = 2;
+            break;
+        }
+    }
+}
 int main()
 {
     
 
     vector<vector<int>> Board(ROWS, vector<int>(COLS, 0));
-
-    int snakeRow = 5;
-    int snakeCol = 5;
 
     vector<pair<int, int>> snake =
     {
@@ -49,17 +63,15 @@ int main()
         {5,5}
     };
 
-    Board[snakeRow][snakeCol] = 1;
-
-    /*for (int i = 0; i < Board.size(); i++) {
-        for (int j = 0; j < Board.size(); j++) {
-            cout << Board[i][j] << "  ";
-        }
-        cout << endl;
-        cout << endl;
-    }*/
+    for (auto segment : snake) {
+        Board[segment.first][segment.second] = 1;
+    }
+    
+    generateFood(Board);
+    drawBoard(Board);
     while (true) {
         clearBoard(Board);
+        bool foodEaten = false;
         char move;
         cin >> move;
         if (move == 'w') dir = UP;
@@ -83,12 +95,18 @@ int main()
         default:
             break;
         }
-        if (newRow < 0 || newCol < 0) {
+        if (newRow < 0 || newRow > ROWS || newCol < 0 || newCol > COLS) {
             cout << "Game Over !" << endl;
             break;
         }
-        snake.push_back({ newRow , newCol });
-        snake.erase(snake.begin());
+        if (Board[newRow][newCol] != 2) {
+            snake.push_back({ newRow , newCol });
+            snake.erase(snake.begin());
+        }
+        else {
+            snake.push_back({ newRow , newCol });
+            generateFood(Board);
+        }
         
         for (auto segment : snake) {
             Board[segment.first][segment.second] = 1;
