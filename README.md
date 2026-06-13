@@ -4,7 +4,7 @@ A console-based implementation of the classic Snake game built using C++ and STL
 
 ## Demo
 
-*(Insert gameplay screenshot or GIF here)*
+![Snake Game 1 Demo](snake_game_demo.gif)
 
 ## Features
 
